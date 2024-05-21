@@ -30,7 +30,7 @@ Usage
 Run the script with the necessary arguments:
 
 please run as sudo or else this program wont work and ignore those warnings if you get while spoofing the target
-sh
+
 
     sudo python3 arpmirage.py -t <target_ip> -g <gateway_ip> [-i <interface>]
 

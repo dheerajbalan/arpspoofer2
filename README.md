@@ -47,8 +47,11 @@ To exit the script gracefully, press Ctrl+C. This will restore the ARP tables to
 sh
 
 [-] Quitting using Ctrl+C. Resetting ARP tables, please wait...
+
 [+] ARP tables restored.
+
 [-] Disabling IP forwarding....
+
 [+] IP forwarding disabled.
 
 License

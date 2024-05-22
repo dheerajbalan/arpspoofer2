@@ -1,89 +1,56 @@
+ARP Spoofing Script
 
-ARP Mirage
-
-Description
-
-ARP Mirage is a Python3-based ARP spoofing tool designed for educational and testing purposes. ARP (Address Resolution Protocol) spoofing is a technique where an attacker sends false ARP messages to a local network, allowing them to intercept or manipulate traffic between devices on the network.
+This script performs ARP spoofing attacks to intercept network traffic between a target machine and the network gateway. It also includes functionality to enable and disable IP forwarding on the attacker's machine to facilitate packet forwarding.
 Features
 
-Spoofs ARP tables of both target and gateway to intercept network traffic.
-Restores ARP tables to their original state upon termination.
-Customizable network interface.
-Displays status messages with color coding using the Colorama library.
+ARP spoofing to intercept network traffic.
+Enable and disable IP forwarding.
+Restore ARP tables on exit to prevent network disruption.
 
 Requirements
 
-    Python 3.x
-    Scapy
-    Colorama
+Python 3
+Scapy
+Colorama
 
-Requirements
-
-    Python 3.x
-
-Installation
-
-To use this tool, you need to install the required Python libraries. Follow the steps below:
-
-Clone the Repository:
-
-First, clone the repository to your local machine using git:
+You can install the required Python packages using pip:
 
 sh
 
-    git clone https://github.com/yourusername/arpmirage.git
-
-
-Navigate to the Directory:
-
-Change to the directory of the cloned repository:
-
-sh
-
-    cd arpmirage
-
-Make the Script Executable:
-
-Change the permissions of the script to make it executable:
-
-sh
-
-    chmod +x arpmirage.py
-
-Create a requirements.txt File:
-To use this tool, you need to install the required Python libraries. You can install them using pip:
-
-sh
-
-    pip install scapy colorama
-
-Install the required libraries using the following command:
-
-sh
-
-    pip install -r requirements.txt
+pip install scapy colorama
 
 Usage
 
-Run the script with the necessary arguments:
+Run the script with the following arguments:
 
-please run as sudo or else this program wont work and ignore those warnings if you get while spoofing the target
+    -t or --target-ip: IP address of the target machine.
+    -g or --gateway-ip: IP address of the network gateway.
+    -i or --interface: Network interface to use (default is eth0).
 
-
-    sudo python3 arpmirage.py -t <target_ip> -g <gateway_ip> [-i <interface>]
-
-Arguments
-
-    -t or --target-ip: The IP address of the target machine.
-    -g or --gateway-ip: The IP address of the gateway (router).
-    -i or --interface: The network interface to use (default is eth0).
-
-Example
+Example:
 
 sh
 
-    sudo python3 arpmirage.py -t 192.168.1.5 -g 192.168.1.1 -i wlan0
+    sudo python3 arp_spoof.py -t 192.168.1.5 -g 192.168.1.1 -i eth0
 
-Disclaimer
+Arguments
 
-This tool is for educational and authorized testing purposes only. Unauthorized use of this tool on networks that you do not own or have explicit permission to test is illegal and unethical. The author is not responsible for any misuse of this tool.
+    -t, --target-ip: IP address of the target machine.
+    -g, --gateway-ip: IP address of the router.
+    -i, --interface: Network interface to use (default: eth0).
+
+
+Exiting
+
+To exit the script gracefully, press Ctrl+C. This will restore the ARP tables to prevent network disruption and disable IP forwarding.
+
+sh
+
+[-] Quitting using Ctrl+C. Resetting ARP tables, please wait...
+[+] ARP tables restored.
+[-] Disabling IP forwarding....
+[+] IP forwarding disabled.
+
+License
+
+This script is intended for educational purposes only. Use it responsibly and only on networks where you have permission to do so.

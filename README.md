@@ -17,7 +17,7 @@ You can install the required Python packages using pip:
 
 sh
 
-pip install scapy colorama
+    pip install scapy colorama
 
 Usage
 

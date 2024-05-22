@@ -1,7 +1,6 @@
 ARP Spoofing Script
 
-This script performs ARP spoofing attacks to intercept network traffic between a target machine and the network gateway. It also includes functionality to enable and disable IP forwarding on the attacker's machine to facilitate packet forwarding.
-Features
+This script, named ARP Mirage, performs ARP spoofing attacks to intercept network traffic between a target machine and the network gateway. It also includes functionality to enable and disable IP forwarding on the attacker's machine to facilitate packet forwarding.
 
 ARP spoofing to intercept network traffic.
 Enable and disable IP forwarding.

